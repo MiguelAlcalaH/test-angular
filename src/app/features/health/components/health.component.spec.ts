@@ -1,11 +1,12 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { MaterialModule } from '@app/material.module';
 import { HealthComponent } from './health.component';
 import { HealthService } from '../services/health.service';
 import { CoreModule } from '@core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ApiComponent', () => {
   let component: HealthComponent;
@@ -13,9 +14,9 @@ describe('ApiComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MaterialModule, CoreModule, HttpClientTestingModule],
       declarations: [HealthComponent],
-      providers: [HealthService],
+      imports: [BrowserAnimationsModule, MaterialModule, CoreModule],
+      providers: [HealthService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   }));
 

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { RouteReusableStrategy, ApiPrefixInterceptor, ErrorHandlerInterceptor, CoreModule } from '@core';
@@ -31,10 +31,11 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
 }
 
 @NgModule({
+  declarations: [AppComponent],
+  bootstrap: [AppComponent, MsalRedirectComponent],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule,
     RouterModule,
     BrowserAnimationsModule,
     MaterialModule,
@@ -75,7 +76,6 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
       }
     ),
   ],
-  declarations: [AppComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -100,7 +100,7 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
     MsalGuard,
     RoleGuard,
     MsalBroadcastService,
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent],
 })
 export class AppModule {}
