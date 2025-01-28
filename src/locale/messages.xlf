@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="HomeMenuTitle" datatype="html">
+        <source>Home</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Home title in header menu</note>
+        <note priority="1" from="meaning">Home menu title</note>
+      </trans-unit>
+      <trans-unit id="HealthMenuTitle" datatype="html">
+        <source>API Health</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">Health title in header menu</note>
+        <note priority="1" from="meaning">Health menu title</note>
+      </trans-unit>
+      <trans-unit id="ProfileMenuTitle" datatype="html">
+        <source>Profile</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">Profile title in header menu</note>
+        <note priority="1" from="meaning">Profile menu title</note>
+      </trans-unit>
+      <trans-unit id="SettingsMenuTitle" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <note priority="1" from="description">Settings title in header menu</note>
+        <note priority="1" from="meaning">Settings menu title</note>
+      </trans-unit>
+      <trans-unit id="LoginButton" datatype="html">
+        <source>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">Login title in login button</note>
+        <note priority="1" from="meaning">Login title</note>
+      </trans-unit>
+      <trans-unit id="LogoutButton" datatype="html">
+        <source>Logout</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <note priority="1" from="description">Logout title in logout button</note>
+        <note priority="1" from="meaning">Logout title</note>
+      </trans-unit>
+      <trans-unit id="HomeTitleMenuMobile" datatype="html">
+        <source>Home</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <note priority="1" from="description">Home title mobile in header menu</note>
+        <note priority="1" from="meaning">Home menu title mobile</note>
+      </trans-unit>
+      <trans-unit id="HealthTitleMenuMobile" datatype="html">
+        <source>API Health</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+        <note priority="1" from="description">Health title mobile in header menu</note>
+        <note priority="1" from="meaning">Health menu title mobile</note>
+      </trans-unit>
+      <trans-unit id="ProfileTitleMenuMobile" datatype="html">
+        <source>Profile</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <note priority="1" from="description">Profile title mobile in header menu</note>
+        <note priority="1" from="meaning">Profile menu title mobile</note>
+      </trans-unit>
+      <trans-unit id="SettingsTitleMenuMobile" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@core/components/header/header.component.html</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <note priority="1" from="description">Settings title mobile in header menu</note>
+        <note priority="1" from="meaning">Settings menu title mobile</note>
+      </trans-unit>
+      <trans-unit id="HealthTitle" datatype="html">
+        <source>Verisure Angular Quickstart</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/health/components/health.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Health page title for API health route</note>
+        <note priority="1" from="meaning">Health title</note>
+      </trans-unit>
+      <trans-unit id="HealthMainBodyMessage" datatype="html">
+        <source>API health status call (&quot;<x id="INTERPOLATION" equiv-text="{{ apiBackendUrl }}"/>&quot;) is shown below:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/health/components/health.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">Health main body message for API health route</note>
+        <note priority="1" from="meaning">Health main body message</note>
+      </trans-unit>
+      <trans-unit id="logoHomeAlt" datatype="html">
+        <source>Verisure Logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">An alt logo</note>
+        <note priority="1" from="meaning">logo home alt</note>
+      </trans-unit>
+      <trans-unit id="HomeTitle" datatype="html">
+        <source>Verisure Angular Quickstart</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Home page title for API health route</note>
+        <note priority="1" from="meaning">Home title</note>
+      </trans-unit>
+      <trans-unit id="HomeFirstBodyMessage" datatype="html">
+        <source>
+          Welcome to the Verisure Angular Quickstart v<x id="INTERPOLATION" equiv-text="{{ version }}"/> with MSAL v2 Authentication!!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+        <note priority="1" from="description">Home first body message for Home route</note>
+        <note priority="1" from="meaning">Home first body message</note>
+      </trans-unit>
+      <trans-unit id="HomeSecondBodyMessage" datatype="html">
+        <source>
+        The objective of this quickstart is to provide a scalable base template based on Angular framework.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">22,24</context>
+        </context-group>
+        <note priority="1" from="description">Home second body message for Home route</note>
+        <note priority="1" from="meaning">Home second body message</note>
+      </trans-unit>
+      <trans-unit id="HomeThirdBodyMessage" datatype="html">
+        <source>
+        This sample demonstrates how to configure MSAL to login, logout, protect routes (&quot;/api-health&quot; and &quot;/profile&quot;), 
+        as well as manage roles to give access to an administration section ((&quot;/settings(&quot;) to users with the Administrator role in Azure AD.
+        and acquire an access token for a protected resources such as the Microsoft Graph API and API Backend.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+        <note priority="1" from="description">Home third body message for Home route</note>
+        <note priority="1" from="meaning">Home third body message</note>
+      </trans-unit>
+      <trans-unit id="HomeFourthBodyMessage" datatype="html">
+        <source>
+        Please review the project&apos;s README.md file for details regarding the libraries and tools used in this Angular
+        quickstart. You can also find guides related to best practices and troubleshooting in Angular development.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">29,32</context>
+        </context-group>
+        <note priority="1" from="description">Home fourth body message for Home route</note>
+        <note priority="1" from="meaning">Home fourth body message</note>
+      </trans-unit>
+      <trans-unit id="HomeFifthBodyMessage" datatype="html">
+        <source>
+        This quickstart is experimental. If you have any comments or suggestions, please contact the Solution
+        Architecture Team. Thank you.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/components/home.component.html</context>
+          <context context-type="linenumber">33,36</context>
+        </context-group>
+        <note priority="1" from="description">Home fifth body message for Home route</note>
+        <note priority="1" from="meaning">Home fifth body message</note>
+      </trans-unit>
+      <trans-unit id="ProfileTitle" datatype="html">
+        <source>Verisure Angular Quickstart</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Profile page title for API health route</note>
+        <note priority="1" from="meaning">Profile title</note>
+      </trans-unit>
+      <trans-unit id="ProfileBodyMessage" datatype="html">
+        <source>
+        This is a protected route, only accessible if you are correctly logged in as a Verisure Azure AD user.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">12,14</context>
+        </context-group>
+        <note priority="1" from="description">Profile body message for Profile route</note>
+        <note priority="1" from="meaning">Profile body message</note>
+      </trans-unit>
+      <trans-unit id="ProfileFirstNameMessage" datatype="html">
+        <source>First Name:
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+        <note priority="1" from="description">Profile first name title for Profile route</note>
+        <note priority="1" from="meaning">Profile first name title</note>
+      </trans-unit>
+      <trans-unit id="ProfileLastNameMessage" datatype="html">
+        <source>Last Name:
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+        <note priority="1" from="description">Profile last name title for Profile route</note>
+        <note priority="1" from="meaning">Profile last name title</note>
+      </trans-unit>
+      <trans-unit id="ProfileEmailMessage" datatype="html">
+        <source>Email: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Profile email title for Profile route</note>
+        <note priority="1" from="meaning">Profile email title</note>
+      </trans-unit>
+      <trans-unit id="ProfileIdMessage" datatype="html">
+        <source>Id: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <note priority="1" from="description">Profile id title for Profile route</note>
+        <note priority="1" from="meaning">Profile id title</note>
+      </trans-unit>
+      <trans-unit id="ProfileDetailsAPIMessage" datatype="html">
+        <source>
+          User data obtained from Microsoft Graph API (https://graph.microsoft.com/v1.0/me).
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+        <note priority="1" from="description">Profile details API message for Profile route</note>
+        <note priority="1" from="meaning">Profile deatils API message</note>
+      </trans-unit>
+      <trans-unit id="ProfilePKCEMessage" datatype="html">
+        <source>
+          The authentication code flow with PKCE for SPA is documented at
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a
+            href=&quot;https://docs.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-javascript-auth-code&quot;
+            target=&quot;_blank&quot;
+            &gt;"/>Microsoft PKCE Code Flow<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+          &gt;"/>.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/profile/components/profile.component.html</context>
+          <context context-type="linenumber">44,51</context>
+        </context-group>
+        <note priority="1" from="description">Profile PKCE description for Profile route</note>
+        <note priority="1" from="meaning">Profile PKCE description</note>
+      </trans-unit>
+      <trans-unit id="SettingsTitle" datatype="html">
+        <source>Verisure Angular Quickstart</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/settings/components/settings.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Settings page title for Settings route</note>
+        <note priority="1" from="meaning">Settings title</note>
+      </trans-unit>
+      <trans-unit id="SettingsAdminSectionMessage" datatype="html">
+        <source>Administration Section</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/settings/components/settings.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <note priority="1" from="description">Settings administration section for Settings
+            route</note>
+        <note priority="1" from="meaning">Settings administration section message</note>
+      </trans-unit>
+      <trans-unit id="SettingsBodyMessage" datatype="html">
+        <source>
+        This is a protected route, only accessible if you are correctly logged in as a Verisure Azure AD user.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/settings/components/settings.component.html</context>
+          <context context-type="linenumber">20,22</context>
+        </context-group>
+        <note priority="1" from="description">Settings body message for Settings route</note>
+        <note priority="1" from="meaning">Settings body message</note>
+      </trans-unit>
+      <trans-unit id="SettingsAdminOnlyMessage" datatype="html">
+        <source>
+        This section is for administrator users only. If you see this area, it means that you have an administrator role
+        for this application in Azure AD.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/settings/components/settings.component.html</context>
+          <context context-type="linenumber">23,26</context>
+        </context-group>
+        <note priority="1" from="description">Settings admin only message for Settings route</note>
+        <note priority="1" from="meaning">Settings admin only message</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

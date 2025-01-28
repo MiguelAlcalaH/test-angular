@@ -1,0 +1,11 @@
+{{- if .Values.pdb.enabled -}}
+apiVersion: {{ include "common.apiVersion.pdb" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "common.names.pdb" . }}
+  namespace: {{ include "common.required.namespace" . }}
+spec:
+  {{- include "common.pdb.type" . | nindent 2 }}
+  selector:
+    matchLabels: {{- include "common.labels.selectors" . | nindent 6 }}
+{{- end -}}

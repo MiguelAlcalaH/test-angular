@@ -1,0 +1,24 @@
+{{- if .Values.hpa.enabled -}}
+apiVersion: {{ include "common.apiVersion.hpa" . }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "common.names.hpa" . }}
+  namespace: {{ include "common.required.namespace" . }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    {{- if .Values.statefulset.enabled }}
+    kind: StatefulSet
+    name: {{ template "common.names.statefulset" . }}
+    {{- else }}
+    kind: Deployment
+    name: {{ template "common.names.deployment" . }}
+    {{- end }}
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
+  {{- if eq "true" (include "common.progressiveDelivery.enabled" .) }}
+  metrics: {{ include "common.hpa.metrics" . | nindent 4 }}
+  {{ else }}
+  metrics: {{- include "common.tplvalues.render" (dict "value" .Values.hpa.metrics "context" $) | nindent 4 }}
+  {{- end -}}
+{{- end -}}

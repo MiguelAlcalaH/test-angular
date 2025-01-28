@@ -1,0 +1,30 @@
+{
+  "generator-verisure-scaffolding": {
+    "appType": "angular",
+    "appName": "mig-angular",
+    "k8sDeploy": true,
+    "k8sNamespace": "mig-angular-ns",
+    "serviceAccount": "mig-angular-sa",
+    "useIstio": true,
+    "targetInfra": "onpremise",
+    "targetClusterGroup": "bss",
+    "features": [
+      "i18n"
+    ],
+    "generateSamples": false,
+    "clusterNames": [
+      "ed1kisd",
+      "ef1bau",
+      "epi1kibss",
+      "epi2kibss",
+      "es1kibss",
+      "es2kibss"
+    ],
+    "targetCDCluster": "ed1kisd",
+    "apiBackendUrl": "http://localhost:8080",
+    "azureAdTenantId": "fc341639-d0f7-4b9d-9415-164ac3a012a5",
+    "azureAdApplicationId": "3a4e0b0b-2db6-4ade-86ed-e18a3eb132d8",
+    "packageName": "com.verisure.undefined.migangular",
+    "packageFolder": "com/verisure/undefined/migangular"
+  }
+}

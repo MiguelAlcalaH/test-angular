@@ -1,0 +1,278 @@
+## SPECIFIC CONFIGURATION FOR "targetCluster" CLUSTER.
+## Please, follow best practices documented at https://helm.sh/docs/chart_best_practices/values/
+
+## Application metadata (MANDATORY)
+targetCluster: ed1kisd
+
+## Container configuration
+## ref: https://kubernetes.io/docs/concepts/containers/
+container:
+  imageName: ~
+  imageVersion: ~
+  imagePullPolicy: Always
+
+  ## container resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits: {}
+    #   cpu: 200m
+    #   memory: 256Mi
+    requests: {}
+    #   cpu: 200m
+    #   memory: 10Mi
+
+  ## Extra volume mounts to add to the container
+  ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+  extraVolumeMounts: []
+
+## If you need a statefulset instead of a deployment
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
+statefulset:
+  enabled: false
+
+## Cronjob configuration
+cronjob:
+  enabled: false
+
+## Pods Security Context.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+podSecurityContext:
+  fsGroup: ~
+
+## Annotations for server pods.
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations:
+  sidecar.istio.io/inject: "false" 
+
+## Pod extra labels
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+## An array to add extra env vars
+## E.g.
+## - name: ""
+##   value: ""
+extraEnvVars: {}
+
+## Extra volumes to add to the deployment
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+extraVolumes: []
+
+## Deployment strategy configuration
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+strategy:
+  enabled: false
+  ## Allowed values: RollingUpdate, Recreate
+  type: ~
+  ## RollingUpdate settings:
+  # maxSurge and maxUnavailable allowed values: The value can be an absolute number or a percentage of desired Pods
+  maxSurge: ~
+  # maxSurge default value: 25%
+  maxUnavailable: ~
+  # maxUnavailable default value: 25%
+
+## Microservice public configuration variables (configmap data)
+## ref: https://kubernetes.io/docs/concepts/configuration/configmap/
+configmap:
+  enabled: true
+  # Data "keys" MUST BE in lowercase.
+  data:
+    msal_application_id: ~
+    msal_redirect_uri: ~
+    msal_authority: ~
+    api_backend_url: ~
+
+## Advanced configmap configuration
+ConfigmapAdvancedConfiguration:
+  enabled: false
+  mountPath:
+  volumeItems:
+    key:
+    path:
+  # Use this as additional configuration in classic config format (Erlang term configuration format)
+  configmapData: |-
+
+## Microservice private configuration variables (secret data).
+## Set "enabled" property to "true" to inject secret variables under "data" in the deployement manifest.
+## Secret values MUST be base64 encoded.
+## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+secret:
+  enabled: false 
+  data: 
+    my_secret_key: my_secret_value_in_b64
+
+## Advanced secret configuration
+SecretAdvancedConfiguration:
+  enabled: false
+  mountPath:
+  volumeItems:
+    key:
+    path:
+  # Use this as additional configuration in classic config format (Erlang term configuration format)
+  secretData: |-
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+nodeSelector: {}
+
+## Tolerations for use with node taints
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
+#  - key: "key"
+#    operator: "Equal"
+#    value: "value"
+#    effect: "NoSchedule"
+
+## Pod affinity preset
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+podAffinityPreset: ""
+
+## Pod anti-affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+podAntiAffinityPreset: soft
+
+## Node affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+## Allowed values: soft, hard
+nodeAffinityPreset:
+  ## Node affinity type
+  ## Allowed values: soft, hard
+  type: ""
+  ## Node label key to match
+  ## E.g.
+  ## key: "kubernetes.io/e2e-az-name"
+  ##
+  key: ""
+  ## Node label values to match
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+
+cloudProvider:
+  enabled: false
+  # Accepted cloud values: azure
+  cloud: ~
+  azure:
+    loadBalancerIP: ~
+    internalLBannotation:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+
+## Add annotations to service
+serviceAnnotations:
+
+## F5 balanced service configuration
+f5:
+  enabled: false
+  # Frontend ssl profile configuration. https://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/v1.5/#virtual-servers
+  frontend:
+    # Balancing strategy as defined in https://github.com/f5devcentral/f5-cccl/blob/03e22c4779ceb88f529337ade3ca31ddcd57e4c8/f5_cccl/schemas/cccl-ltm-api-schema.yml#L515
+    # Default "least-connections-member".
+    balance: ~
+    # Client ssl profile partition/name to configure
+    sslProfile:
+      f5ProfileName: "" #(e.g. "Common/clientssl")
+  backend:
+    healthMonitor:
+      # Accepted values: HTTP / TCP
+      type: HTTP
+      interval: 30
+      # Usually 3 times the interval + 1
+      timeout: 91
+      # Specific send request for the BigIP health monitor.
+      # Default "HTTP/1.0\\r\\nPragma: no-cache\\r\\nCache-Control: no-cache\\r\\nConnection:Close\\r\\n\\r\\n" should fit for most cases.
+      send_request: ~
+      # Please, be aware of your healthcheck response and CHECK IT. Usually "200" for Tomcat and "200 OK" for Nginx or Istio configuration.
+      recv: "200"
+
+## Horizontal Pod Autoscaler configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+## Persistent Volumes configuration
+## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+persistentVolumes:
+  enabled: false
+  items:
+   - pvName: ~
+     pvcName: ~
+     mountPath: ""
+   - pvName: ~
+     pvcName: ~
+     mountPath: ""
+
+## Dinamimc Persistent Volumes configuration
+dinamicPersistentVolumes:
+  enabled: false
+  pvName: ~
+  mountPath: ""
+  accessMode: [ "ReadWriteOnce" ]
+  storageClassName: ""
+  size: ~
+
+# Istio configuration and use of gateway to expose service out of mesh
+istio:
+  enabled: false
+  gateway: false
+  #List of DNS names of the service, usually one if no deployment strategy is used
+  #serviceDnsName is mandatory at least one FQDN
+  serviceDnsName:
+  #Ej:
+# - ps2_cpp.vsdepi.local
+# - ps2_iac.vsdepi.local
+
+## Deployment Strategy Configuration based on Istio
+## ref: https://istio.io/latest/docs/concepts/what-is-istio/
+## ref: https://confluence.apps.verisure.com/display/PSS/Progressive+Delivery+Using+Kubernetes%2C+Istio+and+Helm
+deploymentStrategy:
+  enabled: false
+  # Types of deployment strategies supported: "stable", "canary" or "testab"
+  type: ~
+  testABstrategy: |-
+  # E.g.1
+  #  - headers:
+  #      X-SST-Version:
+  #        regex: 2.0.0
+  #      X-UserId:
+  #        regex: "^41|42$"
+  # E.g.2
+  #  - uri:
+  #      prefix: "/prefix"
+  #  rewrite:
+  #    uri: "/"
+
+## Pod disruption budget configuration
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets
+
+pdb:
+  enabled: false
+  # Type allowed values: minAvailable (Minimum number of replicas you have available)  or
+  #       maxUnavailable (Maximum number of replicas not available)
+  type: ~
+  #The value can be an absolute number or a percentage of desired Pods (Kubernetes round UP)
+  # default value: 1
+  value: ~
+
+## PriorityClass configuration
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+priorityClass:
+  enabled: false
+  name: ~

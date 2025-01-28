@@ -1,0 +1,55 @@
+<div class="container">
+  <mat-card appearance="outlined">
+    <p>
+      <img class="logo" src="assets/images/verisure-logo.png" alt="verisure logo" />
+    </p>
+    <h1>
+      <mat-card-title i18n="Profile title|Profile page title for API health route@@ProfileTitle"
+        >Verisure Angular Quickstart</mat-card-title
+      >
+    </h1>
+    <mat-card-content>
+      <p i18n="Profile body message|Profile body message for Profile route@@ProfileBodyMessage">
+        This is a protected route, only accessible if you are correctly logged in as a Verisure Azure AD user.
+      </p>
+      <app-loader [isLoading]="isLoading" [size]="1.5"></app-loader>
+      <mat-card-content [hidden]="isLoading">
+        <p>
+          <strong i18n="Profile first name title|Profile first name title for Profile route@@ProfileFirstNameMessage"
+            >First Name:
+          </strong>
+          {{ profile && profile.givenName }}
+        </p>
+        <p>
+          <strong i18n="Profile last name title|Profile last name title for Profile route@@ProfileLastNameMessage"
+            >Last Name:
+          </strong>
+          {{ profile && profile.surname }}
+        </p>
+        <p>
+          <strong i18n="Profile email title|Profile email title for Profile route@@ProfileEmailMessage">Email: </strong>
+          {{ profile && profile.userPrincipalName }}
+        </p>
+        <p>
+          <strong i18n="Profile id title|Profile id title for Profile route@@ProfileIdMessage">Id: </strong>
+          {{ profile && profile.id }}
+        </p>
+        <p i18n="Profile deatils API message|Profile details API message for Profile route@@ProfileDetailsAPIMessage">
+          User data obtained from Microsoft Graph API (https://graph.microsoft.com/v1.0/me).
+        </p>
+      </mat-card-content>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-subtitle>
+        <p i18n="Profile PKCE description|Profile PKCE description for Profile route@@ProfilePKCEMessage">
+          The authentication code flow with PKCE for SPA is documented at
+          <a
+            href="https://docs.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-javascript-auth-code"
+            target="_blank"
+            >Microsoft PKCE Code Flow</a
+          >.
+        </p>
+      </mat-card-subtitle>
+    </mat-card-footer>
+  </mat-card>
+</div>

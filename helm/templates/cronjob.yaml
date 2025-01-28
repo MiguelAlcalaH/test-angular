@@ -1,0 +1,101 @@
+{{- if (eq "true" (include "common.validation.cronjobResourceType" .)) }}
+apiVersion: {{ include "common.apiVersion.cronjob" . }}
+kind: CronJob
+metadata:
+  name: {{ include "common.names.cronjob" . }}
+  namespace: {{ include "common.required.namespace" . }}
+  labels: {{- include "common.labels.extendedlabels" . | nindent 4 }}
+spec:
+  schedule: {{.Values.cronjob.schedule | quote }}
+  concurrencyPolicy: {{.Values.cronjob.concurrencyPolicy | default "Forbid" }}
+  successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit | default 4 }}
+  failedJobsHistoryLimit: {{ .Values.cronjob.failedJobsHistoryLimit | default 2 }}
+  startingDeadlineSeconds: {{ .Values.cronjob.startingDeadlineSeconds | default "100" }}
+  suspend: {{ .Values.cronjob.suspend | default "false" }}
+  
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.cronjob.backoffLimit }}
+      template:
+        metadata:
+          labels: {{- include "common.labels.labels" . | nindent 12 }}
+          {{- if .Values.podLabels }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.podAnnotations }}
+          annotations: {{- include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) | nindent 12 }}
+          {{- end }}
+
+        spec:
+          containers:
+            - name: {{ include "common.names.podName" . }}
+              image: {{ include "common.required.imageName" . }}:{{ include "common.required.imageVersion" . }}
+              imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+              securityContext: {{ include "common.containers.securityContext" . | nindent 16 }}
+              env:
+                ## Configmap and secret vars
+                {{ include "common.containers.envVars" .| nindent 16 }}
+                ## Expose Pod Information to Containers Through Environment Variables
+                ## Explained in https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+                {{ include "common.containers.podEnvVars" . | nindent 16 }}
+                ## If you want to add extra variables as key value, set them to extraEnvVars values
+                {{- if .Values.extraEnvVars }}
+                {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 16 }}
+                {{- end }}
+              {{- if .Values.container.resources }}
+              resources: {{- include "common.tplvalues.render" (dict "value" .Values.container.resources "context" $) | nindent 16 }}
+              {{- end }}
+              volumeMounts:
+              {{- if .Values.ConfigmapAdvancedConfiguration.enabled }}
+                - name: configuration
+                  mountPath: {{ .Values.ConfigmapAdvancedConfiguration.mountPath }}
+              {{- end }}
+              {{- if .Values.SecretAdvancedConfiguration.enabled }}
+                - name: secret
+                  mountPath: {{ .Values.SecretAdvancedConfiguration.mountPath }}
+              {{- end }}
+              {{- if eq true .Values.persistentVolumes.enabled }}
+              {{- range .Values.persistentVolumes.items }}
+                - name: {{ include "common.names.pv" . }}
+                  mountPath: {{ include "common.names.mountPath" . }}
+              {{- end }}
+              {{- end }}
+              {{- if .Values.container.extraVolumeMounts }}
+              {{- include "common.tplvalues.render" (dict "value" .Values.container.extraVolumeMounts "context" $) | nindent 16 }}
+              {{- end }}
+          volumes:
+          {{- if .Values.ConfigmapAdvancedConfiguration.enabled }}
+            - name: configuration
+              configMap:
+                name: {{ include "common.names.configmap" . }}
+                items:
+                  - key: {{ .Values.ConfigmapAdvancedConfiguration.volumeItems.key }}
+                    path: {{ .Values.ConfigmapAdvancedConfiguration.volumeItems.path }}
+          {{- end }}
+          {{- if .Values.SecretAdvancedConfiguration.enabled }}
+            - name: secret
+              secret:
+                secretName: {{ include "common.names.secret" . }}
+                items:
+                  - key: {{ .Values.SecretAdvancedConfiguration.volumeItems.key }}
+                    path: {{ .Values.SecretAdvancedConfiguration.volumeItems.path }}
+          {{- end }}
+          {{- if eq true .Values.persistentVolumes.enabled }}
+          {{- range .Values.persistentVolumes.items }}
+            - name: {{ include "common.names.pv" . }}
+              persistentVolumeClaim:
+                claimName: {{ include "common.names.pvc" . }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.extraVolumes }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "common.required.serviceAccountName" . }}
+          restartPolicy: {{ .Values.cronjob.restartPolicy | default "Never" }}
+          securityContext:
+            fsGroup: {{ .Values.podSecurityContext.fsGroup | default 8888 }}
+          affinity:
+            podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAffinityPreset "context" $) | nindent 14 }}
+            podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAntiAffinityPreset "context" $) | nindent 14 }}
+            nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.nodeAffinityPreset.type "key" .Values.nodeAffinityPreset.key "values" .Values.nodeAffinityPreset.values) | nindent 14 }}
+{{- end -}}

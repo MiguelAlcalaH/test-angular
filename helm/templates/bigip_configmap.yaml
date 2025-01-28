@@ -1,0 +1,51 @@
+{{- if or (eq "false" (include "common.progressiveDelivery.enabled" .)) (not (eq "true" (include "common.progressiveDelivery.checkReleaseType" .))) }}
+{{- if (eq "true" (include "common.bigip.isLoadBalancerRequired" .))  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.names.virtualservername" . }}
+  namespace: {{ include "common.namespace.bigIP" . }}
+  labels:
+    f5type: virtual-server
+    app.kubernetes.io/target-cluster: {{ required "The target cluster to deploy is required for the service!" .Values.targetCluster }}
+data:
+  # https://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/latest/#f5-schema
+  schema: "f5schemadb://bigip-virtual-server_v0.1.7.json"
+  data: |
+    {
+      "virtualServer": {
+        "backend": {
+          "servicePort": {{ .Values.service.nodePort }},
+          "serviceName": {{ include "common.serviceName.bigIP" . | quote }},
+          "healthMonitors": [{            
+            {{- if eq .Values.f5.backend.healthMonitor.type "HTTP" }}
+            {{- if eq (include "common.istio.enabled" .) "true" }}
+            "send": "GET {{ required "The healthcheck path is required for the BigIP configuration, otherwise set the protocol to TCP." .Values.container.livenessProbe.httpGet.path }} {{ .Values.f5.backend.healthMonitor.send_request | default "HTTP/1.0\\r\\nHost: \\r\\nPragma: no-cache\\r\\nCache-Control: no-cache\\r\\nConnection:Close\\r\\n\\r\\n" }}",
+            {{- else }}
+            "send": "GET {{ required "The healthcheck path is required for the BigIP configuration, otherwise set the protocol to TCP." .Values.container.livenessProbe.httpGet.path }} {{ .Values.f5.backend.healthMonitor.send_request | default "HTTP/1.0\\r\\nPragma: no-cache\\r\\nCache-Control: no-cache\\r\\nConnection:Close\\r\\n\\r\\n" }}",
+            {{- end }}
+            "recv": {{ required "The RECV is required for the BigIP configuration" .Values.f5.backend.healthMonitor.recv | quote }},
+            {{- end }}
+            "interval": {{ required "The health monitor interval is required for the BigIP configuration" .Values.f5.backend.healthMonitor.interval }},
+            "protocol": {{ required "The protocol is required for the BigIP configuration" .Values.f5.backend.healthMonitor.type | lower | quote }},
+            "timeout": {{ required "The health monitor timeout is required for the BigIP configuration" .Values.f5.backend.healthMonitor.timeout }}
+          }]
+        },
+        "frontend": {
+          "virtualAddress": {
+            "port": {{ required "The service nodePort is required for the BigIP configuration" .Values.service.nodePort }},
+            "bindAddr": {{ include "common.bigip.vip" . | quote }}
+          },
+          "partition": {{ include "common.bigip.partition" . | quote }},
+          "balance": {{ .Values.f5.frontend.balance | default "least-connections-member" | quote }},
+          {{- if eq "true" (include "common.bigip.sslProfile" .) }}
+          "sslProfile": {
+            "f5ProfileName": {{ .Values.f5.frontend.sslProfile.f5ProfileName | quote }}
+          },
+          {{- end }}
+          "mode": "http"
+        }
+      }
+    }
+{{- end -}}
+{{- end -}}

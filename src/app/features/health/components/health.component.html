@@ -1,0 +1,22 @@
+<div class="container">
+  <mat-card appearance="outlined">
+    <p>
+      <img class="logo" src="assets/images/verisure-logo.png" alt="verisure logo" />
+    </p>
+    <h1>
+      <mat-card-title i18n="Health title|Health page title for API health route@@HealthTitle"
+        >Verisure Angular Quickstart</mat-card-title
+      >
+    </h1>
+    <mat-card-content>
+      <mat-card-content
+        i18n="Health main body message|Health main body message for API health route@@HealthMainBodyMessage"
+        >API health status call ("{{ apiBackendUrl }}") is shown below:</mat-card-content
+      >
+      <mat-card-subtitle>
+        <app-loader [isLoading]="isLoading" [size]="1.5"></app-loader>
+        <q [hidden]="isLoading">{{ health }}</q>
+      </mat-card-subtitle>
+    </mat-card-content>
+  </mat-card>
+</div>

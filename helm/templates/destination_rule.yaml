@@ -1,0 +1,18 @@
+{{- if eq "true" (include "common.progressiveDelivery.checkReleaseType" .) }}
+apiVersion: {{ include "common.apiVersion.istio" . }}
+kind: DestinationRule
+metadata:
+  name: {{ include "common.names.destinationrule" . }}
+  namespace: {{ include "common.required.namespace" . }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  host: {{ include "common.names.virtualservice.hosts" . }}
+  subsets:
+  - name: stable
+    labels:
+      releaseType: stable
+  - name: {{ include "common.names.releaseType" . }}
+    labels:
+      releaseType: {{ include "common.names.releaseType" . }}
+{{- end -}}

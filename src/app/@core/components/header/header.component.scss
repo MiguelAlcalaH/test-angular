@@ -1,0 +1,63 @@
+@use '@angular/material' as mat;
+@import "src/theme/theme-variables";
+
+.navbar {
+  @apply fixed top-0 left-0 right-0 z-10;
+}
+
+.brand {
+  color: mat.get-color-from-palette($app-primary, "default-contrast");
+  @apply no-underline pr-4;
+}
+
+.menu-button {
+  @apply mr-4;
+}
+
+:host {
+  @apply flex flex-1;
+}
+
+.mat-sidenav {
+  min-width: 270px;
+  max-width: 28%;
+}
+
+.has-border {
+  @apply border-r border-gray-200;
+}
+
+.mat-mdc-list {
+  @apply pt-0;
+}
+
+.mat-mdc-list-item {
+  @apply no-underline;
+
+  &:hover {
+    @apply bg-gray-100;
+  }
+}
+
+.mat-drawer-container {
+  position: unset;
+}
+
+.mat-sidenav,
+.mat-drawer-content,
+:host ::ng-deep .mat-drawer-backdrop {
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  position: absolute;
+}
+
+@media (max-width: 600px) {
+  .mat-sidenav,
+  .mat-drawer-content,
+  :host ::ng-deep .mat-drawer-backdrop {
+    top: 56px;
+  }
+}

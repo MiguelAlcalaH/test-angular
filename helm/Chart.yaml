@@ -1,0 +1,15 @@
+apiVersion: v2
+description: mig-angular microservice chart.
+name: mig-angular
+version: 1.0.0
+keywords:
+  - SecuritasDirect
+  - Microservice
+  - Kubernetes
+  - Helm
+  - Chart
+  - mig-angular
+dependencies:
+  - name: vsd-helm-utils
+    version: 3.3.0
+    repository: https://artifactory-vdh.gtm.securitasdirect.local/arm/verisure-helm/

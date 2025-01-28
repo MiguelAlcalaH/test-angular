@@ -1,0 +1,73 @@
+<div class="flex flex-col">
+  <!-- Header -->
+  <mat-toolbar class="mat-elevation-z6 navbar" color="primary">
+    <div class="hidden sm:flex items-center">
+      <button class="menu-button" mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div class="flex">
+      <button mat-button routerLink="/home" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        <span i18n="Home menu title Home title in header menu@@HomeMenuTitle">Home</span>
+      </button>
+      <button mat-button routerLink="/api-health" routerLinkActive="active">
+        <mat-icon>monitor_heart</mat-icon>
+        <span i18n="Health menu title Health title in header menu@@HealthMenuTitle">API Health</span>
+      </button>
+      <button mat-button routerLink="/profile" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span i18n="Profile menu title Profile title in header menu@@ProfileMenuTitle">Profile</span>
+      </button>
+      <button *ngIf="isAdmin" mat-button routerLink="/settings" routerLinkActive="active">
+        <mat-icon>settings</mat-icon>
+        <span i18n="Settings menu title Settings title in header menu@@SettingsMenuTitle">Settings</span>
+      </button>
+    </div>
+    <span class="flex-grow"></span>
+    <app-i18n-selector [icon]="true"></app-i18n-selector>
+    <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">
+      <mat-icon>login</mat-icon>
+      <span i18n="Login title Login title in login button@@LoginButton">Login</span>
+    </button>
+    <button mat-raised-button *ngIf="loginDisplay" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span i18n="Logout title Logout title in logout button@@LogoutButton">Logout</span>
+    </button>
+  </mat-toolbar>
+  <!-- Sidenav shell -->
+  <mat-sidenav-container class="flex-grow">
+    <mat-sidenav #sidenav mode="over" class="sm:border">
+      <nav>
+        <mat-list>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="sidenav.close()">
+            <span i18n="Home menu title mobile Home title mobile in header menu@@HomeTitleMenuMobile">Home</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/api-health" routerLinkActive="active" (click)="sidenav.close()">
+            <span i18n="Health menu title mobile Health title mobile in header menu@@HealthTitleMenuMobile"
+              >API Health</span
+            >
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/profile" routerLinkActive="active" (click)="sidenav.close()">
+            <span i18n="Profile menu title mobile Profile title mobile in header menu@@ProfileTitleMenuMobile"
+              >Profile</span
+            >
+          </a>
+          <mat-divider></mat-divider>
+          <a *ngIf="isAdmin" mat-list-item routerLink="/settings" routerLinkActive="active" (click)="sidenav.close()">
+            <span i18n="Settings menu title mobile Settings title mobile in header menu@@SettingsTitleMenuMobile"
+              >Settings</span
+            >
+          </a>
+          <mat-divider></mat-divider>
+        </mat-list>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

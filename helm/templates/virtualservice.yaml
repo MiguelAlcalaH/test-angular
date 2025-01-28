@@ -1,0 +1,150 @@
+{{- if or (eq "true" (include "common.gateway.progressiveDelivery.checkReleaseType" .)) (eq "true" (include "common.gateway.istio" .)) }}
+apiVersion: {{ include "common.apiVersion.istio" . }}
+kind: VirtualService
+metadata:
+  name: {{ include "common.names.virtualservice" . }}-ext
+  namespace: {{ include "common.required.namespace" . }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  hosts:
+  {{- range .Values.istio.serviceDnsName }}
+  - {{ . }}
+  {{- end }}
+  gateways:
+  - {{ .Chart.Name }}-gw
+  http:
+  {{- if eq "true" (include "common.progressiveDelivery.checkReleaseType" . ) }}
+  {{- if eq "true" (include "common.testAB.type" . ) }}
+  {{- if eq "true" (include "common.testAB.enabled" . ) }}
+  {{- if eq "true" (include "common.testABconfirmRollout.enabled" . ) }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: {{ include "common.names.releaseType" . }}
+        port:
+          number: {{ .Values.service.port }}
+  {{- else }}
+  - match:
+    {{- include "common.tplvalues.render" (dict "value" .Values.deploymentStrategy.testABstrategy "context" $) | nindent 4 }}
+    route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: {{ include "common.names.releaseType" . }}
+        port:
+          number: {{ .Values.service.port }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: stable
+        port:
+          number: {{ .Values.service.port }}
+  {{- end }}
+  {{- else }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: stable
+        port:
+          number: {{ .Values.service.port }}
+      weight: 100
+  {{- end }}
+  {{- end }}
+  {{- if eq "true" (include "common.canary.type" . ) }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: {{ include "common.names.releaseType" . }}
+        port:
+          number: {{ .Values.service.port }}
+      weight: {{ .Values.deploymentStrategy.canaryWeight }}
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: stable
+        port:
+          number: {{ .Values.service.port }}
+      weight: {{ include "common.istio.stableDeployment.weight" . }}
+  {{- end }}
+  {{- else }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        port:
+          number: {{ .Values.service.port }}
+  {{- end }}
+{{- end }}
+
+{{- if (eq "true" (include "common.progressiveDelivery.checkReleaseType" .)) }}
+---
+apiVersion: {{ include "common.apiVersion.istio" . }}
+kind: VirtualService
+metadata:
+  name: {{ include "common.names.virtualservice" . }}
+  namespace: {{ include "common.required.namespace" . }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  gateways:
+  - mesh
+  hosts:
+  - {{ include "common.names.virtualservice.hosts" . | nindent 4 | trim }}
+  http:
+  {{- if eq "true" (include "common.progressiveDelivery.checkReleaseType" . ) }}
+  {{- if eq "true" (include "common.testAB.type" . ) }}
+  {{- if eq "true" (include "common.testAB.enabled" . ) }}
+  {{- if eq "true" (include "common.testABconfirmRollout.enabled" . ) }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: {{ include "common.names.releaseType" . }}
+        port:
+          number: {{ .Values.service.port }}
+  {{- else }}
+  - match:
+    {{- include "common.tplvalues.render" (dict "value" .Values.deploymentStrategy.testABstrategy "context" $) | nindent 4 }}
+    route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: {{ include "common.names.releaseType" . }}
+        port:
+          number: {{ .Values.service.port }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: stable
+        port:
+          number: {{ .Values.service.port }}
+  {{- end }}
+  {{- else }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: stable
+        port:
+          number: {{ .Values.service.port }}
+      weight: 100
+  {{- end }}
+  {{- end }}
+  {{- if eq "true" (include "common.canary.type" . ) }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: {{ include "common.names.releaseType" . }}
+        port:
+          number: {{ .Values.service.port }}
+      weight: {{ .Values.deploymentStrategy.canaryWeight }}
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        subset: stable
+        port:
+          number: {{ .Values.service.port }}
+      weight: {{ include "common.istio.stableDeployment.weight" . }}
+  {{- end }}
+  {{- else }}
+  - route:
+    - destination:
+        host: {{ include "common.names.virtualservice.hosts" . }}
+        port:
+          number: {{ .Values.service.port }}
+  {{- end }}
+{{- end }}

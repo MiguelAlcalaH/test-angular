@@ -1,0 +1,124 @@
+{{- if (eq "true" (include "common.validation.deploymentResourceType" .)) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.names.deployment" . }}
+  namespace: {{ include "common.required.namespace" . }}
+  labels: {{- include "common.labels.extendedlabels" . | nindent 4 }}
+    app: {{ .Chart.Name }}
+
+spec:
+  {{- if not .Values.hpa.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  {{- if .Values.strategy.enabled }}
+  strategy: {{- include "common.deployment.strategy" . | nindent 4 }}
+  {{- end }}
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels: {{- include "common.labels.selectors" . | nindent 6 }}
+  template:
+    metadata:
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{- include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) | nindent 8 }}
+      {{- end }}
+      labels: {{- include "common.labels.extendedlabels" . | nindent 8 }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+        {{- include "common.istio.annotation" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      containers:
+        - name: {{ include "common.names.podName" . }}
+          image: {{ include "common.required.imageName" . }}:{{ include "common.required.imageVersion" . }}
+          imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+          securityContext: {{ include "common.containers.securityContext" . | nindent 12 }}
+          {{- if .Values.service.targetPort }}
+          ports:
+          - containerPort: {{ .Values.service.targetPort }}
+            name: {{ include "common.service.portName" . }}
+          {{- end }}
+          {{- if .Values.container.lifecycleHooks }}
+          lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.container.lifecycleHooks "context" $) | nindent 12 }}
+          {{- end }}
+          env:
+
+            {{ include "common.containers.envVars" .| nindent 14 }}
+            {{ include "common.containers.podEnvVars" . | nindent 14 }}
+            {{- if .Values.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 14 }}
+            {{- end }}
+          {{- if .Values.container.resources }}
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.container.resources "context" $) | nindent 16 }}
+          {{- end }}
+          {{- if .Values.container.livenessProbe }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.container.livenessProbe "context" $) | nindent 16 }}
+          {{- end }}
+          {{- if .Values.container.readinessProbe }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.container.readinessProbe "context" $) | nindent 16 }}
+          {{- end }}
+          volumeMounts:
+          {{- if .Values.ConfigmapAdvancedConfiguration.enabled }}
+            - name: configuration
+              mountPath: {{ .Values.ConfigmapAdvancedConfiguration.mountPath }}
+          {{- end }}
+          {{- if .Values.SecretAdvancedConfiguration.enabled }}
+            - name: secret
+              mountPath: {{ .Values.SecretAdvancedConfiguration.mountPath }}
+          {{- end }}
+          {{- if eq true .Values.persistentVolumes.enabled }}
+          {{- range .Values.persistentVolumes.items }}
+            - name: {{ include "common.names.pv" . }}
+              mountPath: {{ include "common.names.mountPath" . }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.container.extraVolumeMounts }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.container.extraVolumeMounts "context" $) | nindent 12 }}
+          {{- end }}
+
+      volumes:
+      {{- if .Values.ConfigmapAdvancedConfiguration.enabled }}
+        - name: configuration
+          configMap:
+            name: {{ include "common.names.configmap" . }}
+            items:
+              - key: {{ .Values.ConfigmapAdvancedConfiguration.volumeItems.key }}
+                path: {{ .Values.ConfigmapAdvancedConfiguration.volumeItems.path }}
+      {{- end }}
+      {{- if .Values.SecretAdvancedConfiguration.enabled }}
+        - name: secret
+          secret:
+            secretName: {{ include "common.names.secret" . }}
+            items:
+              - key: {{ .Values.SecretAdvancedConfiguration.volumeItems.key }}
+                path: {{ .Values.SecretAdvancedConfiguration.volumeItems.path }}
+      {{- end }}
+      {{- if eq true .Values.persistentVolumes.enabled }}
+      {{- range .Values.persistentVolumes.items }}
+        - name: {{ include "common.names.pv" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "common.names.pvc" . }}
+      {{- end }}
+      {{- end }}
+      {{- if .Values.extraVolumes }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 8 }}
+      {{- end }}
+      securityContext:
+        fsGroup: {{ .Values.podSecurityContext.fsGroup | default 8888 }}
+      serviceAccountName: {{ include "common.required.serviceAccountName" . }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" ( dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" .) | nindent 8 }}
+      {{- end }}
+      affinity:
+        podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAffinityPreset "context" $) | nindent 12 }}
+        podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAntiAffinityPreset "context" $) | nindent 12 }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.nodeAffinityPreset.type "key" .Values.nodeAffinityPreset.key "values" .Values.nodeAffinityPreset.values) | nindent 16 }}
+      {{- if .Values.priorityClass.enabled  }}
+      priorityClassName: {{ .Values.priorityClass.name | default "high-priority" }}
+      {{- end }}
+{{- end -}}

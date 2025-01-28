@@ -1,0 +1,49 @@
+## COMMON CONFIGURATION THROUGH ALL ENVIRONMENTS
+## Please, follow best practices documented at https://helm.sh/docs/chart_best_practices/values/
+
+
+## Application metadata (MANDATORY)
+appNamespace: mig-angular-ns
+appServiceAccount: mig-angular-sa
+
+## Component metadata used mainly for labels.
+componentType: microservice
+componentManagedBy: ITArchitecture
+
+
+terminationGracePeriodSeconds: 30
+
+## Container configuration
+## ref: https://kubernetes.io/docs/concepts/containers/
+container:
+  livenessProbe:
+    failureThreshold: 10
+    httpGet:
+      path: /health/health.json
+      port: 8080
+    initialDelaySeconds: 40
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  readinessProbe:
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 20
+    httpGet:
+      path: /health/health.json
+      port: 8080
+
+## Number of nodes
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 
+replicaCount: 1
+
+## Service configuration
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  type: NodePort
+  nodePort: ~
+  port: 8080
+  targetPort: 8080
+  portName: http         #Any DNS_LABEL is allowed

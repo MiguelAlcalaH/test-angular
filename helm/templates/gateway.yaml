@@ -1,0 +1,19 @@
+{{- if or (eq "true" (include "common.gateway.progressiveDelivery.checkReleaseType" .)) (eq "true" (include "common.gateway.istio" .)) }}
+apiVersion: {{ include "common.apiVersion.istio" . }}
+kind: Gateway
+metadata:
+  name: {{ .Chart.Name }}-gw
+  namespace: {{ include "common.required.namespace" . }}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: {{ .Values.service.port }}
+      name: http
+      protocol: HTTP
+    hosts:
+    {{- range .Values.istio.serviceDnsName }}
+    - {{ . }}
+    {{- end }}
+{{- end -}}
